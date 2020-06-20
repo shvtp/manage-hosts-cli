@@ -2,7 +2,7 @@
   "name": "manage-hosts-cli",
   "version": "1.0.0",
   "bin": {
-    "hosts": "./index.js"
+    "manage-hosts": "./index.js"
   },
   "description": "Managing the hosts and ip addresses in /etc/hosts file",
   "main": "index.js",
