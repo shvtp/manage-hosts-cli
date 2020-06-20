@@ -68,7 +68,7 @@ const yargs = require("yargs");
 
                 // If dependant options are an array of options.
                 // Dependancy check fails if neither of them are passed in comand line.
-                var isValid = !!optionProperties.depends.required;
+                var isValid = !optionProperties.depends.required;
                 optionsToCheck.forEach(opt => {
                     if ((isValid = isValid || argv[opt]) && argv[opt]) {
 
@@ -79,6 +79,7 @@ const yargs = require("yargs");
                 dependantOptions.isValid = Boolean(isValid);
             }
         }
+        console.log(dependantOptions);
         return dependantOptions;
     }
 
