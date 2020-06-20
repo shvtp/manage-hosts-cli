@@ -79,7 +79,6 @@ const yargs = require("yargs");
                 dependantOptions.isValid = Boolean(isValid);
             }
         }
-        console.log(dependantOptions);
         return dependantOptions;
     }
 
