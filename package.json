@@ -1,6 +1,6 @@
 {
-  "name": "manage-hosts",
-  "version": "1.1.0",
+  "name": "manage-hosts-cli",
+  "version": "1.0.0",
   "bin": {
     "hosts": "./index.js"
   },
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/shivam-thapar/manage-hosts#readme",
   "dependencies": {
     "colors": "^1.4.0",
+    "manage-hosts": "file:../manage-hosts",
     "moment": "^2.25.1",
     "yargs": "^15.3.1"
   }

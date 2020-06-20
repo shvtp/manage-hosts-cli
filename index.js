@@ -8,24 +8,75 @@ const yargs = require("yargs");
     // Parsing arguments
     var argv = yargs.options(options).argv;
 
+    // Not enough arguments passed. Show help and exit.
     if (Object.keys(argv).length == 2) {
         yargs.showHelp();
         return;
     }
 
+    function getCamelCased(str) {
+        return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+    }
+
+    // Populate a list of all valid options
+    var validOptions = Object.keys(options);
+    validOptions.forEach((option) => {
+        validOptions.push(getCamelCased(options[option].alias));
+        validOptions.push(options[option].alias);
+    });
+
+    // Keys added by yargs by default
+    validOptions.push('_');
+    validOptions.push('$0');
+
+    // Check for invalid arguments
+    var invalidArgs = Object.keys(argv).filter(isInvalidOption);
+    if (invalidArgs.length) {
+        console.log('Invalid arguments passed : ' + invalidArgs.join(', '));
+        yargs.showHelp();
+        return;
+    }
+
+    // Return true if argument option is present in list of valid options
+    function isInvalidOption(option) {
+        return -1 === validOptions.indexOf(option);
+    }
+
+    /**
+     * Checks if dependant options are present.
+     * If present then at the least one of them should have been passes as an argument in command line.
+     * 
+     * @param {*} optionProperties 
+     */
     function getDependantOptions(optionProperties) {
-        var optionsToCheck, dependantOptions = {options: {}, isValid: true};
+
+        // Default true. If no dependant options present in option properties
+        var optionsToCheck,
+            dependantOptions = {options: {}, isValid: true};
+
+        // If dependant options are present in option properties
         if (optionProperties.depends && (optionsToCheck = optionProperties.depends.options)) {
             if (typeof optionsToCheck === 'string') {
+
+                // If dependant options is a single value as string
                 dependantOptions.isValid = Boolean(argv[optionsToCheck]);
+
+                // Argument value was passed in command line for dependant option - optionsToCheck
+                if (dependantOptions.isValid)
+                    dependantOptions.options[optionsToCheck] = argv[optionsToCheck];
             } else {
-                var isValid = false;
+
+                // If dependant options are an array of options.
+                // Dependancy check fails if neither of them are passed in comand line.
+                var isValid = !!optionProperties.depends.required;
                 optionsToCheck.forEach(opt => {
                     if ((isValid = isValid || argv[opt]) && argv[opt]) {
+
+                        // Argument value was passed in command line for dependant option - opt
                         dependantOptions.options[opt] = argv[opt];
                     }
                 });
-                dependantOptions.isValid = isValid;
+                dependantOptions.isValid = Boolean(isValid);
             }
         }
         return dependantOptions;
@@ -45,7 +96,7 @@ const yargs = require("yargs");
             // Is option passed as argument
             if (argValue) {
 
-                // Validating dependent options.
+                // Validating dependent options. Show help if dependancy check fails.
                 let dependantOptions = getDependantOptions(optionProperties);
                 if (!dependantOptions.isValid) {
                     yargs.showHelp();
