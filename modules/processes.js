@@ -1,6 +1,6 @@
 require("colors");
 const os = require("os");
-const manageHosts = require("manage-hosts");
+const manageHosts = require("@shvtp/manage-hosts");
 /**
  * This file exports all available processing that can be done on the hosts file
  */

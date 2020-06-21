@@ -1,5 +1,5 @@
 const processes = require("./modules/processes")();
-const manageHosts = require("manage-hosts");
+const manageHosts = require("@shvtp/manage-hosts");
 
 const hosts = new manageHosts();
 
