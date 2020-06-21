@@ -15,10 +15,15 @@ function processes() {
 
     // Function to print data on terminal
     function print(dataToPrint) {
+        console.log(os.EOL + 'ACTIVE - White Backgrouond'.bgWhite.red);
+        console.log('INACTIVE - RED Backgrouond'.bgRed.white + os.EOL);
+        if (Object.keys(dataToPrint).length === 0) {
+            console.log('No entries found'.black.bgWhite + os.EOL);
+        }
         for (const groupId in dataToPrint) {
             if (dataToPrint.hasOwnProperty(groupId)) {
                 const element = dataToPrint[groupId];
-                let groupIdOutput = appendSpaces('Group Id : \t\t#' + groupId);
+                let groupIdOutput = appendSpaces('Group Id : \t\t' + groupId);
                 let groupNameOutput = appendSpaces(
                     'Group Name : \t\t' + element.groupInfo.name.toUpperCase()
                 );
@@ -31,14 +36,16 @@ function processes() {
                 let output = appendSpaces("Line\tIP Domains") + os.EOL;
                 let isActive = false;
                 element.lineInfos.forEach(info => {
-                    isActive = info.isActive;
-                    let lineOutput = '#' + info.lineNumber + "\t" + info.ip;
-                    info.domains.forEach((domain) => {
-                        lineOutput += ' ' + domain;
-                    });
-                    output += appendSpaces(lineOutput) + os.EOL;
+                    if(info.isValid) {
+                        isActive = info.isActive
+                        let lineOutput = info.lineNumber + "\t" + info.ip;
+                        info.domains.forEach((domain) => {
+                            lineOutput += ' ' + domain;
+                        });
+                        output += appendSpaces(lineOutput) + os.EOL;
+                    }
                 });
-                if (output !== '') {
+                if (groupIdOutput !== '' && output !== '') {
                     console.log(isActive ? groupIdOutput.black.bgWhite : groupIdOutput.bgRed);
                     console.log(isActive ? groupNameOutput.magenta.bgWhite.bold : groupNameOutput.bgRed.yellow.bold);
                     if('' !== envOutput) {
