@@ -1,5 +1,5 @@
 {
-  "name": "manage-hosts-cli",
+  "name": "@shvtp/manage-hosts-cli",
   "version": "2.0.0",
   "bin": {
     "manage-hosts": "./index.js"
