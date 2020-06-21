@@ -1,5 +1,7 @@
-const utils = require("./modules/utils")();
 const processes = require("./modules/processes")();
+const manageHosts = require("manage-hosts");
+
+const hosts = new manageHosts();
 
 // This object stores the properties of all options available for passing in arguments
 // And a custom function key (callBackFn) which will be executed when that option is passed
@@ -28,7 +30,7 @@ const options = {
     b: {
         // Yargs option property mapping
         alias: 'backup',
-        describe: 'Backups the current hosts file to ' + utils.getBackupFilePath(true),
+        describe: 'Backups the current hosts file to ' + hosts.getBackupFilePath(true),
         boolean: true,
         // Custom key to set function which will get executed when this option is passed as argument
         callBackFn: processes.backup
