@@ -83,7 +83,7 @@ const yargs = require("yargs");
     }
 
     // Processing arguments
-    for(let option in options) {
+    for(const option in options) {
 
         // Option properties object containing info about option
         let optionProperties = options[option];

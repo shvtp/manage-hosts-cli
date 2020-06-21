@@ -1,4 +1,4 @@
-const colors = require("colors");
+require("colors");
 const os = require("os");
 const manageHosts = require("manage-hosts");
 /**
@@ -13,6 +13,7 @@ function processes() {
 
     const printStringLength = 120;
 
+    // Function to print data on terminal
     function print(dataToPrint) {
         for (const groupId in dataToPrint) {
             if (dataToPrint.hasOwnProperty(groupId)) {
@@ -54,7 +55,7 @@ function processes() {
     function appendSpaces(str) {
         let returnStr = str;
         if(str.length < printStringLength)
-            for (let index = 0; index < printStringLength - str.length; index++)
+            for (let index = str.length; index < printStringLength; index++)
                 returnStr += ' ';
         return returnStr
     }
