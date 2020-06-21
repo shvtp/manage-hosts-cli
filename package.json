@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/shivam-thapar/manage-hosts#readme",
   "dependencies": {
+    "@shvtp/manage-hosts": "^2.0.0",
     "colors": "^1.4.0",
-    "manage-hosts": "file:../manage-hosts",
     "moment": "^2.25.1",
     "yargs": "^15.3.1"
   }
