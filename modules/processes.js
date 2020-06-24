@@ -11,50 +11,47 @@ function processes() {
 
     const hosts = new manageHosts();
 
-    const printStringLength = 120;
+    const printStringLength = 150;
 
     // Function to print data on terminal
     function print(dataToPrint) {
-        console.log(os.EOL + 'ACTIVE - White Backgrouond'.bgWhite.red);
-        console.log('INACTIVE - RED Backgrouond'.bgRed.white + os.EOL);
+        console.log(os.EOL + appendSpaces('\u2714       ACTIVE').bgWhite.red);
+        console.log(appendSpaces('\u2718       INACTIVE').bgRed.white + os.EOL);
         if (Object.keys(dataToPrint).length === 0) {
             console.log('No entries found'.black.bgWhite + os.EOL);
         }
         for (const groupId in dataToPrint) {
             if (dataToPrint.hasOwnProperty(groupId)) {
                 const element = dataToPrint[groupId];
-                let groupIdOutput = appendSpaces('Group Id : \t\t' + groupId);
+                let groupIdOutput = appendSpaces('Group Id :           ' + groupId);
+                console.log(groupIdOutput.bgWhite.black);
                 let groupNameOutput = appendSpaces(
-                    'Group Name : \t\t' + element.groupInfo.name.toUpperCase()
+                    'Group Name :         ' + element.groupInfo.name.toUpperCase()
                 );
+                console.log(groupNameOutput.bgWhite.bold.magenta);
                 let envOutput = '';
                 if (element.groupInfo.env) {
                     envOutput = appendSpaces(
-                        'Group Environment : \t' + element.groupInfo.env.toUpperCase()
+                        'Group Environment :  ' + element.groupInfo.env.toUpperCase()
                     );
+                    console.log(envOutput.italic.bgWhite.red);
                 }
-                let output = appendSpaces("Line\tIP Domains") + os.EOL;
-                let isActive = false;
+                let output = appendSpaces("Active  Line    IP Domains");
+                console.log(output.bgWhite.black);
                 element.lineInfos.forEach(info => {
                     if(info.isValid) {
-                        isActive = info.isActive
-                        let lineOutput = info.lineNumber + "\t" + info.ip;
+                        let lineOutput = (info.isActive ? '\u2714       ' : '\u2718       ') +
+                            info.lineNumber +
+                            (info.lineNumber < 100 ? (info.lineNumber < 10 ? '  ' : ' ') : '') +
+                            "     " + info.ip;
                         info.domains.forEach((domain) => {
                             lineOutput += ' ' + domain;
                         });
-                        output += appendSpaces(lineOutput) + os.EOL;
+                        let output = appendSpaces(lineOutput);
+                        console.log(info.isActive ? output.red.bgWhite : output.white.bgRed);
                     }
                 });
-                if (groupIdOutput !== '' && output !== '') {
-                    console.log(isActive ? groupIdOutput.black.bgWhite : groupIdOutput.bgRed);
-                    console.log(isActive ? groupNameOutput.magenta.bgWhite.bold : groupNameOutput.bgRed.yellow.bold);
-                    if('' !== envOutput) {
-                        console.log(
-                            isActive ? envOutput.red.bgWhite.italic : envOutput.blue.bgRed.italic
-                        );
-                    }
-                    console.log(isActive ? output.gray.bgWhite : output.black.bgRed);
-                }
+                console.log(os.EOL);
             }
         }
     }
